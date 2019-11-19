@@ -25,4 +25,27 @@ then
 		echo "Establece tu contraseña"
 		read -s contra2
 		echo ${nombre}":"${contra2} | chpasswd
-
+#9- Comprueba que el comando "passwd" se ha echo bien 
+        if [[ $? -eq 0 ]]
+        then
+                echo "Comprovación de que la contraseña se le ha dado correctamente"
+        else
+                echo "ha ocurrido un error"
+                exit 1
+        fi
+#10- Fuerza a cambiar la contraseña en el primer LogIn 
+        echo "En el primer Sign In se te obliga a cambiar la contraseña, porfavor introduzca la contraseña otra vez"
+        read -s contra3
+        passwd -e ${nombre}
+        echo ${nombre}":"${contra3} | chpasswd
+#11- Muestra el nombre, la contraseña y el host desde donde se ha creado el usuario 
+        echo "El resumen final es:"
+        echo "- El usuario es: "${nombre}
+        echo "- La contraseña es: "${contra3}
+        echo "- El Host desde donde se ha creado es: "${HOSTNAME}
+	else
+		echo "El numero de valores no son correctos, son dos valores, el primero sera el nombre de usuario y el segundo el comentario"
+	fi
+else
+        echo "No puedes ejecutar este script, intentalo mas tarde con el usuario root"
+fi
